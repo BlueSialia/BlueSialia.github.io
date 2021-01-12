@@ -1,16 +1,16 @@
 function initMap() {
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 5,
-        center: {lat: 42.5, lng: -2.8},
+    const map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 7,
+        center: {lat: 51.91, lng: -8.18},
         mapTypeId: 'terrain'
-    });
-    var squareCoords = [
-        {lat: 42.1, lng: -2.3},
-        {lat: 43, lng: -2.3},
-        {lat: 43, lng: -3.4},
-        {lat: 42.1, lng: -3.4}
+	});
+    const squareCoords = [
+        {lat: map.center.lat() - 0.2, lng: map.center.lng() + 0.3},
+        {lat: map.center.lat() + 0.2, lng: map.center.lng() + 0.3},
+        {lat: map.center.lat() + 0.2, lng: map.center.lng() - 0.3},
+        {lat: map.center.lat() - 0.2, lng: map.center.lng() - 0.3}
     ];
-    var workArea = new google.maps.Polygon({
+    const workArea = new google.maps.Polygon({
         paths: squareCoords,
         strokeColor: '#009999',
         strokeOpacity: 0.8,
