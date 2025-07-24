@@ -52,7 +52,6 @@ function createBasicsSection(basics) {
 	}
 
 	contactInfo += `</div>`;
-
 	basicsSection += contactInfo;
 
 	// Location
@@ -73,7 +72,6 @@ function createBasicsSection(basics) {
 	}
 
 	basicsSection += `</div>`;
-
 	return basicsSection;
 }
 
@@ -138,6 +136,220 @@ function createLanguagesSection(languages) {
 	return languagesSection;
 }
 
+// Function to create a section and its content for Work
+function createWorkSection(work) {
+	let workSection = `<div class="section work">`;
+	workSection += createElement("h2", null, "Work");
+
+	for (const job of work) {
+		const {
+			name,
+			description,
+			location,
+			url,
+			position,
+			summary,
+			highlights,
+			startDate,
+			endDate,
+		} = job;
+
+		let jobItem = `<div class="job-item">`;
+
+		if (startDate || endDate) {
+			let timeline = `<div class="timeline">`;
+			if (startDate) {
+				timeline += createElement("span", "date", startDate);
+			}
+			if (endDate) {
+				timeline += ` &mdash; `;
+				timeline += createElement("span", "date", endDate);
+			}
+			timeline += `</div>`;
+			jobItem += timeline;
+		}
+
+		jobItem += `<div class="job-details">`;
+
+		if (name) {
+			jobItem += createElement("h3", null, name);
+		}
+		if (description) {
+			jobItem += createElement("span", "description", description);
+		}
+		if (location || url) {
+			let locationUrl = `<div class="location-url">`;
+			if (location) {
+				locationUrl += createElement("span", null, location);
+			}
+			if (url) {
+				locationUrl += ` &bull; `;
+				locationUrl += createElement("a", "url", url, null, url);
+			}
+			locationUrl += `</div>`;
+			jobItem += locationUrl;
+		}
+
+		if (position) {
+			jobItem += createElement("h4", "subtitle", position);
+		}
+		if (summary) {
+			jobItem += createElement("p", null, summary);
+		}
+		if (highlights && highlights.length > 0) {
+			let highlightList = `<ul class="highlights">`;
+			for (const highlight of highlights) {
+				highlightList += createElement("li", null, highlight);
+			}
+			highlightList += `</ul>`;
+			jobItem += highlightList;
+		}
+
+		jobItem += `</div>`;
+
+		jobItem += `</div>`;
+		workSection += jobItem;
+	}
+
+	workSection += `</div>`;
+	return workSection;
+}
+
+function createVolunteerSection(volunteer) {
+	let volunteerSection = `<div class="section volunteer">`;
+	volunteerSection += createElement("h2", null, "Volunteer");
+
+	for (const vol of volunteer) {
+		const {
+			organization,
+			url,
+			position,
+			summary,
+			highlights,
+			startDate,
+			endDate,
+		} = vol;
+
+		let volItem = `<div class="vol-item">`;
+
+		if (startDate || endDate) {
+			let timeline = `<div class="timeline">`;
+			if (startDate) {
+				timeline += createElement("span", "date", startDate);
+			}
+			if (endDate) {
+				timeline += ` &mdash; `;
+				timeline += createElement("span", "date", endDate);
+			}
+			timeline += `</div>`;
+			volItem += timeline;
+		}
+
+		volItem += `<div class="vol-details">`;
+
+		if (organization) {
+			volItem += createElement("h3", null, organization);
+		}
+		if (url) {
+			volItem += createElement("a", "description", url, null, url);
+		}
+
+		if (position) {
+			volItem += createElement("h4", "subtitle", position);
+		}
+		if (summary) {
+			volItem += createElement("p", null, summary);
+		}
+		if (highlights && highlights.length > 0) {
+			let highlightList = `<ul class="highlights">`;
+			for (const highlight of highlights) {
+				highlightList += createElement("li", null, highlight);
+			}
+			highlightList += `</ul>`;
+			volItem += highlightList;
+		}
+
+		volItem += `</div>`;
+
+		volItem += `</div>`;
+		volunteerSection += volItem;
+	}
+
+	volunteerSection += `</div>`;
+	return volunteerSection;
+}
+
+function createEducationSection(education) {
+	let educationSection = `<div class="section education">`;
+	educationSection += createElement("h2", null, "Education");
+
+	for (const edu of education) {
+		const {
+			institution,
+			url,
+			area,
+			studyType,
+			courses,
+			startDate,
+			endDate,
+		} = edu;
+
+		let eduItem = `<div class="edu-item">`;
+
+		if (startDate || endDate) {
+			let timeline = `<div class="timeline">`;
+			if (startDate) {
+				timeline += createElement("span", "date", startDate);
+			}
+			if (endDate) {
+				timeline += ` &mdash; `;
+				timeline += createElement("span", "date", endDate);
+			}
+			timeline += `</div>`;
+			eduItem += timeline;
+		}
+
+		eduItem += `<div class="edu-details">`;
+
+		if (institution) {
+			eduItem += createElement("h3", null, institution);
+		}
+		if (url) {
+			eduItem += createElement("a", "description", url, null, url);
+		}
+
+		if (area || studyType) {
+			let areaStudy = `<div class="area-study">`;
+			if (area) {
+				areaStudy += createElement("span", null, area);
+			}
+			if (studyType) {
+				areaStudy += ` &bull; `;
+				areaStudy += createElement("span", "description", studyType);
+			}
+			areaStudy += `</div>`;
+			eduItem += areaStudy;
+		}
+
+		if (courses && courses.length > 0) {
+			let courseList = `<ul class="courses">`;
+			for (const course of courses) {
+				courseList += createElement("li", null, course);
+			}
+			courseList += `</ul>`;
+			eduItem += courseList;
+		}
+
+		eduItem += `</div>`;
+
+		eduItem += `</div>`;
+		educationSection += eduItem;
+	}
+
+	educationSection += `</div>`;
+	return educationSection;
+}
+
 // Function to create a section and its content
 function createGeneralSection(title, data) {
 	let sectionDiv = `<div class="section">`;
@@ -200,11 +412,15 @@ export function render(data) {
     display: flex;
     width: 100%;
   }
-  .column {
+  .left-column {
     flex: 1;
     padding: 20px;
   }
-  .basics, .skills, .languages {
+  .right-column {
+    flex: 2;
+    padding: 20px;
+  }
+  .section {
     background-color: #f4f4f9;
     margin-bottom: 20px;
     padding: 20px;
@@ -237,6 +453,123 @@ export function render(data) {
     border-radius: 20px;
     font-size: 12px;
   }
+  .work {
+      position: relative;
+  }
+  .job-item {
+      display: flex;
+      margin-bottom: 20px;
+      align-items: flex-start;
+  }
+  .job-item::before {
+      content: "";
+      position: absolute;
+      left: -4px; /* Adjusted to align with the timeline */
+      top: 5px;
+      width: 8px;
+      height: calc(100% - 10px);
+      background-color: #ccc;
+  }
+  .job-item .timeline {
+      margin-right: 20px;
+      position: relative;
+  }
+  .job-item .job-details {
+      flex: 1;
+  }
+  .job-item h3, .job-item h4 {
+      margin-top: 0;
+  }
+  .job-item .description {
+      color: #666;
+      font-size: 14px;
+      display: inline-block;
+      margin-left: 5px;
+  }
+  .job-item .location-url {
+      margin-top: 5px;
+      color: #666;
+      font-size: 12px;
+  }
+  .job-item h4 {
+      margin-top: 0;
+      font-weight: normal;
+  }
+  .job-item p {
+      margin-top: 5px;
+  }
+  .volunteer, .education {
+      position: relative;
+  }
+  .vol-item, .edu-item {
+      display: flex;
+      margin-bottom: 20px;
+      align-items: flex-start;
+  }
+  .vol-item::before, .edu-item::before {
+      content: "";
+      position: absolute;
+      left: -4px; /* Adjusted to align with the timeline */
+      top: 5px;
+      width: 8px;
+      height: calc(100% - 10px);
+      background-color: #ccc;
+  }
+  .vol-item .timeline, .edu-item .timeline {
+      margin-right: 20px;
+      position: relative;
+  }
+  .vol-item .vol-details, .edu-item .edu-details {
+      flex: 1;
+  }
+  .vol-item h3, .vol-item h4, .edu-item h3, .edu-item h4 {
+      margin-top: 0;
+  }
+  .vol-item .description, .edu-item .description {
+      color: #666;
+      font-size: 14px;
+      display: inline-block;
+      margin-left: 5px;
+  }
+  .vol-item .area-study, .edu-item .area-study {
+      margin-top: 5px;
+      color: #666;
+      font-size: 12px;
+  }
+  .vol-item h4, .edu-item h4 {
+      margin-top: 0;
+      font-weight: normal;
+  }
+  .vol-item p, .edu-item p {
+      margin-top: 5px;
+  }
+  .highlights {
+      list-style-type: none;
+      padding: 0;
+      margin-top: 5px;
+  }
+  .highlights li {
+      margin-bottom: 5px;
+  }
+  .courses {
+      list-style-type: none;
+      padding: 0;
+      margin-top: 5px;
+  }
+  .courses li {
+      margin-bottom: 5px;
+  }
+  .timeline::before {
+      content: "";
+      position: absolute;
+      left: -6px; /* Adjusted to align with the timeline */
+      top: 0;
+      width: 12px;
+      height: 12px;
+      background-color: #007BFF;
+      border-radius: 50%;
+      z-index: 1; /* Ensure it stays above the line */
+  }
 </style>
 `;
 
@@ -244,7 +577,7 @@ export function render(data) {
 	resumeContainer += styles;
 
 	// Create the left column
-	let leftColumn = `<div class="column">`;
+	let leftColumn = `<div class="left-column">`;
 	if (data.basics) {
 		leftColumn += createBasicsSection(data.basics);
 	}
@@ -257,13 +590,26 @@ export function render(data) {
 	leftColumn += `</div>`;
 
 	// Create the right column
-	let rightColumn = `<div class="column">`;
+	let rightColumn = `<div class="right-column">`;
+	if (data.work) {
+		rightColumn += createWorkSection(data.work);
+	}
+	if (data.volunteer) {
+		rightColumn += createVolunteerSection(data.volunteer);
+	}
+	if (data.education) {
+		rightColumn += createEducationSection(data.education);
+	}
+
 	for (const key in data) {
 		if (
 			data.hasOwnProperty(key) &&
 			key !== "basics" &&
 			key !== "skills" &&
-			key !== "languages"
+			key !== "languages" &&
+			key !== "work" &&
+			key !== "volunteer" &&
+			key !== "education"
 		) {
 			rightColumn += createGeneralSection(key, data[key]);
 		}
