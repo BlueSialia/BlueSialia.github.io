@@ -1,9 +1,80 @@
-// Function to create an element with given tag, class, text content, and parent
-function createElement(tagName, className, textContent) {
+// Function to create an element with given tag, class, text content, and attributes
+function createElement(
+	tagName,
+	className = "",
+	textContent = "",
+	attributes = {},
+) {
 	let element = `<${tagName}`;
 	if (className) element += ` class="${className}"`;
+	for (const [key, value] of Object.entries(attributes)) {
+		element += ` ${key}="${value}"`;
+	}
 	element += `>${textContent}</${tagName}>`;
 	return element;
+}
+
+// Function to create a section and its content
+function createSection(title) {
+	let sectionDiv = `<div class="section">`;
+	if (title) {
+		sectionDiv += createElement("h2", null, title);
+	}
+	return sectionDiv;
+}
+
+// Function to add contact information
+function addContactInfo(email, phone, url) {
+	let contactInfo = ``;
+	if (email) {
+		contactInfo += createElement("a", "contact-item", email, {
+			href: `mailto:${email}`,
+		});
+	}
+	if (phone) {
+		contactInfo += createElement("a", "contact-item", phone, {
+			href: `tel:${phone}`,
+		});
+	}
+	if (url) {
+		contactInfo += createElement("a", "contact-item", url, { href: url });
+	}
+	return contactInfo;
+}
+
+// Function to add location information
+function addLocation(location) {
+	let locationLine = `<div class="location">`;
+	const locationParts = [];
+	if (location.address) locationParts.push(location.address);
+	if (location.city) locationParts.push(location.city);
+	if (location.region) locationParts.push(location.region);
+	if (location.postalCode) locationParts.push(location.postalCode);
+	if (location.countryCode) locationParts.push(location.countryCode);
+	locationLine += locationParts.join(", ");
+	locationLine += `</div>`;
+	return locationLine;
+}
+
+// Function to add chips
+function addChips(keywords) {
+	let keywordChips = `<div class="chips">`;
+	for (const keyword of keywords) {
+		keywordChips += createElement("span", "chip", keyword);
+	}
+	keywordChips += `</div>`;
+	return keywordChips;
+}
+
+// Function to add highlights
+function addHighlights(highlights) {
+	if (!highlights || !highlights.length) return ``;
+	let highlightList = `<ul class="highlights">`;
+	for (const highlight of highlights) {
+		highlightList += createElement("li", null, highlight);
+	}
+	highlightList += `</ul>`;
+	return highlightList;
 }
 
 // Function to create a section and its content for Basics
@@ -19,66 +90,30 @@ function createBasicsSection(basics) {
 		summary,
 	} = basics;
 
-	let basicsSection = `<div class="section basics">`;
-
-	// Image
+	let basicsSection = createSection(null);
 	if (image) {
-		basicsSection += `<img src="${image}" alt="Profile Picture" style="float: left; margin-right: 20px; width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">`;
+		basicsSection += createElement("img", null, "", {
+			src: image,
+			alt: "Profile Picture",
+			style: "float: left; margin-right: 20px; width: 100px; height: 100px; border-radius: 50%; object-fit: cover;",
+		});
 	}
-
-	// Name and Label
 	basicsSection += createElement("h1", null, name);
 	if (label) {
 		basicsSection += createElement("h2", "subtitle", label);
 	}
-
-	// Contact Information
-	let contactInfo = `<div class="contact-info">`;
-
-	if (email) {
-		contactInfo += createElement(
-			"a",
-			"contact-item",
-			email,
-			null,
-			`mailto:${email}`,
-		);
-	}
-	if (phone) {
-		contactInfo += createElement("span", "contact-item", phone);
-	}
-	if (url) {
-		contactInfo += createElement("a", "contact-item", url, null, url);
-	}
-
-	contactInfo += `</div>`;
-	basicsSection += contactInfo;
-
-	// Location
-	let locationLine = `<div class="location">`;
-	const locationParts = [];
-	if (location.address) locationParts.push(location.address);
-	if (location.city) locationParts.push(location.city);
-	if (location.region) locationParts.push(location.region);
-	if (location.postalCode) locationParts.push(location.postalCode);
-	if (location.countryCode) locationParts.push(location.countryCode);
-	locationLine += locationParts.join(", ");
-	locationLine += `</div>`;
-	basicsSection += locationLine;
-
-	// Summary
+	basicsSection += addContactInfo(email, phone, url);
+	basicsSection += addLocation(location);
 	if (summary) {
 		basicsSection += createElement("p", null, summary);
 	}
-
 	basicsSection += `</div>`;
 	return basicsSection;
 }
 
 // Function to create a section and its content for Skills
 function createSkillsSection(skills) {
-	let skillsSection = `<div class="section skills">`;
-	skillsSection += createElement("h2", null, "Skills");
+	let skillsSection = createSection("Skills");
 
 	for (const skill of skills) {
 		const { name, level, keywords } = skill;
@@ -91,18 +126,7 @@ function createSkillsSection(skills) {
 			skillItem += createElement("h4", "subtitle", level);
 		}
 		if (keywords && keywords.length > 0) {
-			let keywordChips = `<div class="chips">`;
-			for (const keyword of keywords) {
-				keywordChips += createElement(
-					"span",
-					"chip",
-					keyword,
-					null,
-					`#${keyword}`,
-				);
-			}
-			keywordChips += `</div>`;
-			skillItem += keywordChips;
+			skillItem += addChips(keywords);
 		}
 		skillItem += `</div>`;
 		skillsSection += skillItem;
@@ -114,8 +138,7 @@ function createSkillsSection(skills) {
 
 // Function to create a section and its content for Languages
 function createLanguagesSection(languages) {
-	let languagesSection = `<div class="section languages">`;
-	languagesSection += createElement("h2", null, "Languages");
+	let languagesSection = createSection("Languages");
 
 	for (const language of languages) {
 		const { language: lang, fluency } = language;
@@ -138,8 +161,7 @@ function createLanguagesSection(languages) {
 
 // Function to create a section and its content for Work
 function createWorkSection(work) {
-	let workSection = `<div class="section work">`;
-	workSection += createElement("h2", null, "Work");
+	let workSection = createSection("Work");
 
 	for (const job of work) {
 		const {
@@ -162,7 +184,7 @@ function createWorkSection(work) {
 				timeline += createElement("span", "date", startDate);
 			}
 			if (endDate) {
-				timeline += ` &mdash; `;
+				timeline += ` <br> `;
 				timeline += createElement("span", "date", endDate);
 			}
 			timeline += `</div>`;
@@ -184,7 +206,7 @@ function createWorkSection(work) {
 			}
 			if (url) {
 				locationUrl += ` &bull; `;
-				locationUrl += createElement("a", "url", url, null, url);
+				locationUrl += createElement("a", "url", url, { href: url });
 			}
 			locationUrl += `</div>`;
 			jobItem += locationUrl;
@@ -197,12 +219,7 @@ function createWorkSection(work) {
 			jobItem += createElement("p", null, summary);
 		}
 		if (highlights && highlights.length > 0) {
-			let highlightList = `<ul class="highlights">`;
-			for (const highlight of highlights) {
-				highlightList += createElement("li", null, highlight);
-			}
-			highlightList += `</ul>`;
-			jobItem += highlightList;
+			jobItem += addHighlights(highlights);
 		}
 
 		jobItem += `</div>`;
@@ -215,9 +232,9 @@ function createWorkSection(work) {
 	return workSection;
 }
 
+// Function to create a section and its content for Volunteer
 function createVolunteerSection(volunteer) {
-	let volunteerSection = `<div class="section volunteer">`;
-	volunteerSection += createElement("h2", null, "Volunteer");
+	let volunteerSection = createSection("Volunteer");
 
 	for (const vol of volunteer) {
 		const {
@@ -238,7 +255,7 @@ function createVolunteerSection(volunteer) {
 				timeline += createElement("span", "date", startDate);
 			}
 			if (endDate) {
-				timeline += ` &mdash; `;
+				timeline += ` <br> `;
 				timeline += createElement("span", "date", endDate);
 			}
 			timeline += `</div>`;
@@ -251,7 +268,7 @@ function createVolunteerSection(volunteer) {
 			volItem += createElement("h3", null, organization);
 		}
 		if (url) {
-			volItem += createElement("a", "description", url, null, url);
+			volItem += createElement("a", "description", url, { href: url });
 		}
 
 		if (position) {
@@ -261,12 +278,7 @@ function createVolunteerSection(volunteer) {
 			volItem += createElement("p", null, summary);
 		}
 		if (highlights && highlights.length > 0) {
-			let highlightList = `<ul class="highlights">`;
-			for (const highlight of highlights) {
-				highlightList += createElement("li", null, highlight);
-			}
-			highlightList += `</ul>`;
-			volItem += highlightList;
+			volItem += addHighlights(highlights);
 		}
 
 		volItem += `</div>`;
@@ -279,9 +291,9 @@ function createVolunteerSection(volunteer) {
 	return volunteerSection;
 }
 
+// Function to create a section and its content for Education
 function createEducationSection(education) {
-	let educationSection = `<div class="section education">`;
-	educationSection += createElement("h2", null, "Education");
+	let educationSection = createSection("Education");
 
 	for (const edu of education) {
 		const {
@@ -302,7 +314,7 @@ function createEducationSection(education) {
 				timeline += createElement("span", "date", startDate);
 			}
 			if (endDate) {
-				timeline += ` &mdash; `;
+				timeline += ` <br> `;
 				timeline += createElement("span", "date", endDate);
 			}
 			timeline += `</div>`;
@@ -315,7 +327,7 @@ function createEducationSection(education) {
 			eduItem += createElement("h3", null, institution);
 		}
 		if (url) {
-			eduItem += createElement("a", "description", url, null, url);
+			eduItem += createElement("a", "description", url, { href: url });
 		}
 
 		if (area || studyType) {
@@ -350,10 +362,9 @@ function createEducationSection(education) {
 	return educationSection;
 }
 
-// Function to create a section and its content
+// Function to create a section and its content for General
 function createGeneralSection(title, data) {
-	let sectionDiv = `<div class="section">`;
-	sectionDiv += createElement("h2", null, title);
+	let sectionDiv = createSection(title);
 
 	for (const key in data) {
 		if (data.hasOwnProperty(key)) {
@@ -403,14 +414,11 @@ function createGeneralSection(title, data) {
 export function render(data) {
 	const styles = `
 <style>
-  body {
-    display: flex;
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
   .resume-container {
     display: flex;
     width: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
   }
   .left-column {
     flex: 1;
@@ -428,6 +436,7 @@ export function render(data) {
   }
   .section h2 {
     margin-top: 0;
+    margin-bottom: 10px;
   }
   .contact-info {
     display: flex;
@@ -441,10 +450,22 @@ export function render(data) {
   .location {
     margin-top: 10px;
   }
+  .skill-item h3, .language-item h3 {
+    display: inline-block;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+  }
+  .skill-item h4, .language-item h4 {
+    display: inline-block;
+    color: #666;
+    margin: 0;
+ }
   .chips {
     display: flex;
+    flex-wrap: wrap;
     gap: 5px;
-    margin-top: 10px;
+    margin-bottom: 10px;
   }
   .chip {
     background-color: #007BFF;
@@ -453,119 +474,71 @@ export function render(data) {
     border-radius: 20px;
     font-size: 12px;
   }
-  .work {
+  .work, .volunteer, .education {
       position: relative;
   }
-  .job-item {
+  .job-item, .vol-item, .edu-item {
+      position: relative;
       display: flex;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       align-items: flex-start;
   }
-  .job-item::before {
+  .job-item::before, .vol-item::before, .edu-item::before {
       content: "";
       position: absolute;
-      left: -4px; /* Adjusted to align with the timeline */
-      top: 5px;
+      left: 95px; /* Adjusted to align with the timeline */
+      top: 40px;
       width: 8px;
-      height: calc(100% - 10px);
+      height: calc(100% - 35px);
       background-color: #ccc;
+      border-radius: 4px;
   }
-  .job-item .timeline {
+  .job-item .timeline, .vol-item .timeline, .edu-item .timeline {
       margin-right: 20px;
       position: relative;
+      width: 82px;
+      text-align: center;
   }
-  .job-item .job-details {
-      flex: 1;
+  .job-item .job-details, .vol-item .vol-details, .edu-item .edu-details {
+      position: relative;
+      left: 15px;
   }
-  .job-item h3, .job-item h4 {
-      margin-top: 0;
+  .job-item h3, .vol-item h3, .edu-item h3 {
+      display: inline-block;
+      margin: 0;
   }
-  .job-item .description {
+  .job-item h4, .vol-item h4, .edu-item h4 {
+      margin: 10px 0;
+  }
+  .job-item .description, .vol-item .description, .edu-item .description {
       color: #666;
       font-size: 14px;
       display: inline-block;
       margin-left: 5px;
   }
-  .job-item .location-url {
+  .job-item .location-url, .edu-item .area-study {
       margin-top: 5px;
       color: #666;
       font-size: 12px;
   }
-  .job-item h4 {
-      margin-top: 0;
-      font-weight: normal;
-  }
-  .job-item p {
+  .job-item p, .vol-item p, .edu-item p {
       margin-top: 5px;
   }
-  .volunteer, .education {
-      position: relative;
-  }
-  .vol-item, .edu-item {
-      display: flex;
-      margin-bottom: 20px;
-      align-items: flex-start;
-  }
-  .vol-item::before, .edu-item::before {
-      content: "";
-      position: absolute;
-      left: -4px; /* Adjusted to align with the timeline */
-      top: 5px;
-      width: 8px;
-      height: calc(100% - 10px);
-      background-color: #ccc;
-  }
-  .vol-item .timeline, .edu-item .timeline {
-      margin-right: 20px;
-      position: relative;
-  }
-  .vol-item .vol-details, .edu-item .edu-details {
-      flex: 1;
-  }
-  .vol-item h3, .vol-item h4, .edu-item h3, .edu-item h4 {
-      margin-top: 0;
-  }
-  .vol-item .description, .edu-item .description {
-      color: #666;
-      font-size: 14px;
-      display: inline-block;
-      margin-left: 5px;
-  }
-  .vol-item .area-study, .edu-item .area-study {
-      margin-top: 5px;
-      color: #666;
-      font-size: 12px;
-  }
-  .vol-item h4, .edu-item h4 {
-      margin-top: 0;
-      font-weight: normal;
-  }
-  .vol-item p, .edu-item p {
-      margin-top: 5px;
-  }
-  .highlights {
+  .highlights, .courses {
       list-style-type: none;
       padding: 0;
       margin-top: 5px;
   }
-  .highlights li {
-      margin-bottom: 5px;
-  }
-  .courses {
-      list-style-type: none;
-      padding: 0;
-      margin-top: 5px;
-  }
-  .courses li {
+  .highlights li, .courses li {
       margin-bottom: 5px;
   }
   .timeline::before {
       content: "";
       position: absolute;
-      left: -6px; /* Adjusted to align with the timeline */
-      top: 0;
-      width: 12px;
-      height: 12px;
+      left: 90px; /* Adjusted to align with the timeline */
+      top: 10px;
+      width: 18px;
+      height: 18px;
       background-color: #007BFF;
       border-radius: 50%;
       z-index: 1; /* Ensure it stays above the line */
