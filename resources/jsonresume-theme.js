@@ -42,10 +42,11 @@ function createSection(title) {
  * @param {string} email - The email address.
  * @param {string} phone - The phone number.
  * @param {string} url - The URL.
+ * @param {Array} profiles - An array of profile objects.
  * @returns {string} - The generated HTML string for the contact information.
  */
-function addContactInfo(email, phone, url) {
-	let contactInfo = ``;
+function addContactInfo(email, phone, url, profiles) {
+	let contactInfo = `<div class="contact-info">`;
 	if (email) {
 		contactInfo += createElement("a", "contact-item", email, {
 			href: `mailto:${email}`,
@@ -57,8 +58,16 @@ function addContactInfo(email, phone, url) {
 		});
 	}
 	if (url) {
-		contactInfo += createElement("a", "contact-item", url, { href: url });
+		contactInfo += createElement("a", "contact-item", "Website", {
+			href: url,
+		});
 	}
+	for (const profile of profiles) {
+		contactInfo += createElement("a", "contact-item", profile.network, {
+			href: profile.url,
+		});
+	}
+	contactInfo += `</div>`;
 	return contactInfo;
 }
 
@@ -127,23 +136,24 @@ function createBasicsSection(basics) {
 		phone,
 		url,
 		location = {},
+		profiles = {},
 		summary,
 	} = basics;
 
 	let basicsSection = createSection(null);
 	if (image) {
 		basicsSection += createElement("img", null, "", {
+			class: "profile-picture",
 			src: image,
 			alt: "Profile Picture",
-			style: "float: left; margin-right: 20px; width: 100px; height: 100px; border-radius: 50%; object-fit: cover;",
 		});
 	}
 	basicsSection += createElement("h1", null, name);
 	if (label) {
 		basicsSection += createElement("h2", "subtitle", label);
 	}
-	basicsSection += addContactInfo(email, phone, url);
 	basicsSection += addLocation(location);
+	basicsSection += addContactInfo(email, phone, url, profiles);
 	if (summary) {
 		basicsSection += createElement("p", null, summary);
 	}
@@ -162,7 +172,7 @@ function createLanguagesSection(languages) {
 
 	for (const language of languages) {
 		const { language: lang, fluency } = language;
-		let languageItem = `<div class="language-item">`;
+		let languageItem = `<div class="section-item">`;
 
 		if (lang) {
 			languageItem += createElement("h3", null, lang);
@@ -190,7 +200,7 @@ function createSkillsSection(skills) {
 
 	for (const skill of skills) {
 		const { name, level, keywords } = skill;
-		let skillItem = `<div class="skill-item">`;
+		let skillItem = `<div class="section-item">`;
 
 		if (name) {
 			skillItem += createElement("h3", null, name);
@@ -221,7 +231,7 @@ function createReferencesSection(references) {
 
 	for (const ref of references) {
 		const { name, reference } = ref;
-		let referenceItem = `<div class="reference-item">`;
+		let referenceItem = `<div class="section-item">`;
 
 		if (name) {
 			referenceItem += createElement("h3", null, name);
@@ -250,15 +260,15 @@ function createReferencesSection(references) {
 }
 
 /**
- * Creates a section and its content for Work based on the given data.
+ * Creates a section and its content for Experience based on the given data.
  *
- * @param {Array<Object>} work - An array of work objects (name, description, location, url, position, summary, highlights, startDate, endDate).
- * @returns {string} - The generated HTML string for the Work section.
+ * @param {Array<Object>} experience - An array of work objects (name, description, location, url, position, summary, highlights, startDate, endDate).
+ * @returns {string} - The generated HTML string for the Experience section.
  */
-function createWorkSection(work) {
-	let workSection = createSection("Work");
+function createExperienceSection(experiences) {
+	let experienceSection = createSection("Experience");
 
-	for (const job of work) {
+	for (const experience of experiences) {
 		const {
 			name,
 			description,
@@ -269,9 +279,9 @@ function createWorkSection(work) {
 			highlights,
 			startDate,
 			endDate,
-		} = job;
+		} = experience;
 
-		let jobItem = `<div class="job-item">`;
+		let experienceItem = `<div class="timeline-section-item">`;
 
 		if (startDate || endDate) {
 			let timeline = `<div class="timeline">`;
@@ -285,19 +295,19 @@ function createWorkSection(work) {
 				timeline += createElement("span", "date", startDate);
 			}
 			timeline += `</div>`;
-			jobItem += timeline;
+			experienceItem += timeline;
 		}
 
-		jobItem += `<div class="job-details">`;
+		experienceItem += `<div class="timeline-section-details">`;
 
 		if (name) {
-			jobItem += createElement("h3", null, name);
+			experienceItem += createElement("h3", null, name);
 		}
 		if (description) {
-			jobItem += createElement("span", "description", description);
+			experienceItem += createElement("span", "description", description);
 		}
 		if (location || url) {
-			let locationUrl = `<div class="location-url">`;
+			let locationUrl = `<div class="title-anex">`;
 			if (location) {
 				locationUrl += createElement("span", null, location);
 			}
@@ -306,27 +316,27 @@ function createWorkSection(work) {
 				locationUrl += createElement("a", "url", url, { href: url });
 			}
 			locationUrl += `</div>`;
-			jobItem += locationUrl;
+			experienceItem += locationUrl;
 		}
 
 		if (position) {
-			jobItem += createElement("h4", "subtitle", position);
+			experienceItem += createElement("h4", "subtitle", position);
 		}
 		if (summary) {
-			jobItem += createElement("p", null, summary);
+			experienceItem += createElement("p", null, summary);
 		}
 		if (highlights && highlights.length > 0) {
-			jobItem += addHighlights(highlights);
+			experienceItem += addHighlights(highlights);
 		}
 
-		jobItem += `</div>`;
+		experienceItem += `</div>`;
 
-		jobItem += `</div>`;
-		workSection += jobItem;
+		experienceItem += `</div>`;
+		experienceSection += experienceItem;
 	}
 
-	workSection += `</div>`;
-	return workSection;
+	experienceSection += `</div>`;
+	return experienceSection;
 }
 
 /**
@@ -336,7 +346,7 @@ function createWorkSection(work) {
  * @returns {string} - The generated HTML string for the Projects section.
  */
 function createProjectsSection(projects) {
-	let projectsSection = `<div class="section projects">`;
+	let projectsSection = `<div class="section">`;
 	projectsSection += createElement("h2", null, "Projects");
 
 	for (const project of projects) {
@@ -349,7 +359,7 @@ function createProjectsSection(projects) {
 			startDate,
 			endDate,
 		} = project;
-		let projectItem = `<div class="project-item">`;
+		let projectItem = `<div class="timeline-section-item">`;
 
 		if (startDate || endDate) {
 			let timeline = `<div class="timeline">`;
@@ -366,27 +376,16 @@ function createProjectsSection(projects) {
 			projectItem += timeline;
 		}
 
-		projectItem += `<div class="project-details">`;
+		projectItem += `<div class="timeline-section-details">`;
 
-		if (name || url) {
-			let titleAndUrl = `<div style="display: flex; align-items: center;">`;
-			if (name) {
-				titleAndUrl += createElement("h3", null, name);
-			}
-			if (url) {
-				try {
-					new URL(url); // Check if url is a valid URL
-					titleAndUrl += ` &bull; `;
-					titleAndUrl += createElement("a", "description", url, {
-						href: url,
-					});
-				} catch (e) {
-					titleAndUrl += ` &bull; `;
-					titleAndUrl += createElement("span", null, url);
-				}
-			}
-			titleAndUrl += `</div>`;
-			projectItem += titleAndUrl;
+		if (name) {
+			projectItem += createElement("h3", null, name);
+		}
+		if (url) {
+			projectItem += ` &bull; `;
+			projectItem += createElement("a", "description", url, {
+				href: url,
+			});
 		}
 
 		if (description) {
@@ -435,7 +434,7 @@ function createVolunteerSection(volunteer) {
 			endDate,
 		} = vol;
 
-		let volItem = `<div class="vol-item">`;
+		let volItem = `<div class="timeline-section-item">`;
 
 		if (startDate || endDate) {
 			let timeline = `<div class="timeline">`;
@@ -452,7 +451,7 @@ function createVolunteerSection(volunteer) {
 			volItem += timeline;
 		}
 
-		volItem += `<div class="vol-details">`;
+		volItem += `<div class="timeline-section-details">`;
 
 		if (organization) {
 			volItem += createElement("h3", null, organization);
@@ -462,7 +461,7 @@ function createVolunteerSection(volunteer) {
 		}
 
 		if (position) {
-			volItem += createElement("h4", "subtitle", position);
+			volItem += createElement("div", "title-anex", position);
 		}
 		if (summary) {
 			volItem += createElement("p", null, summary);
@@ -501,7 +500,7 @@ function createEducationSection(education) {
 			endDate,
 		} = edu;
 
-		let eduItem = `<div class="edu-item">`;
+		let eduItem = `<div class="timeline-section-item">`;
 
 		if (startDate || endDate) {
 			let timeline = `<div class="timeline">`;
@@ -518,7 +517,7 @@ function createEducationSection(education) {
 			eduItem += timeline;
 		}
 
-		eduItem += `<div class="edu-details">`;
+		eduItem += `<div class="timeline-section-details">`;
 
 		if (institution) {
 			eduItem += createElement("h3", null, institution);
@@ -528,12 +527,11 @@ function createEducationSection(education) {
 		}
 
 		if (area || studyType) {
-			let areaStudy = `<div class="area-study">`;
+			let areaStudy = `<div class="title-anex">`;
 			if (area) {
 				areaStudy += createElement("span", null, area);
 			}
 			if (studyType) {
-				areaStudy += ` &bull; `;
 				areaStudy += createElement("span", "description", studyType);
 			}
 			areaStudy += `</div>`;
@@ -560,60 +558,6 @@ function createEducationSection(education) {
 }
 
 /**
- * Creates a section and its content for General data not covered by specific sections.
- *
- * @param {string} title - The title of the general section.
- * @param {*} data - The general data to be included in the section.
- * @returns {string} - The generated HTML string for the general section.
- */
-function createGeneralSection(title, data) {
-	let sectionDiv = createSection(title);
-
-	for (const key in data) {
-		if (data.hasOwnProperty(key)) {
-			const value = data[key];
-			if (typeof value === "object" && !Array.isArray(value)) {
-				// Handle nested objects
-				sectionDiv += createGeneralSection(`${title} - ${key}`, value);
-			} else if (Array.isArray(value)) {
-				// Handle arrays
-				let list = `<ul>`;
-				value.forEach((item) => {
-					if (typeof item === "object") {
-						let listItem = `<li>`;
-						for (const subKey in item) {
-							if (item.hasOwnProperty(subKey)) {
-								listItem += createElement(
-									"div",
-									"sub-item",
-									`${subKey}: ${JSON.stringify(item[subKey])}`,
-								);
-							}
-						}
-						listItem += `</li>`;
-						list += listItem;
-					} else {
-						list += createElement("li", null, JSON.stringify(item));
-					}
-				});
-				list += `</ul>`;
-				sectionDiv += list;
-			} else {
-				// Handle primitive types
-				sectionDiv += createElement(
-					"div",
-					"item",
-					`${key}: ${JSON.stringify(value)}`,
-				);
-			}
-		}
-	}
-
-	sectionDiv += `</div>`;
-	return sectionDiv;
-}
-
-/**
  * Renders the JSON resume data into an HTML string with defined styles and sections.
  *
  * @param {Object} data - The JSON resume data.
@@ -622,133 +566,173 @@ function createGeneralSection(title, data) {
 export function render(data) {
 	const styles = `
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
   .resume-container {
     display: flex;
     padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  .resume-container p {
+    max-width: 1600px;
+    margin: auto;
+    font-family: "Lato", sans-serif;
+    font-size: 14px;
+
+    h1, h2, h3, h4 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    p {
       margin: 5px 0 0 0;
-  }
-  .left-column {
-    flex: 1;
-    background-color: #f4f4f9;
-    border-radius: 8px;
-  }
-  .right-column {
-    flex: 2;
-  }
-  .section {
-    padding: 20px;
-  }
-  .section h1 {
-    margin-top: 0;
-    margin-bottom: 10px;
-  }
-  .section h2 {
-    margin-top: 0;
-    margin-bottom: 10px;
-  }
-  .contact-info {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  .contact-item {
-    text-decoration: none;
-    color: #007BFF;
-  }
-  .location {
-    margin-top: 10px;
-  }
-  .skill-item h3, .language-item h3 {
-    display: inline-block;
-    margin-top: 10px;
-    margin-right: 10px;
-    margin-bottom: 5px;
-  }
-  .skill-item h4, .language-item h4 {
-    display: inline-block;
-    color: #666;
-    margin: 0;
- }
-  .chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-bottom: 10px;
-  }
-  .chip {
-    background-color: #007BFF;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-  }
-  .work, .volunteer, .education {
+    }
+
+    .left-column {
+      flex: 1;
+      padding: 10px;
+      background-color: #f4f4f9;
+      border-radius: 12px;
+    }
+
+    .right-column {
+      flex: 2;
+      padding: 10px;
+    }
+
+    .section {
       position: relative;
-  }
-  .job-item, .project-item, .vol-item, .edu-item {
-      position: relative;
-      display: flex;
-      align-items: flex-start;
-      margin-top: 10px;
-  }
-  .job-item .timeline, .project-item .timeline, .vol-item .timeline, .edu-item .timeline {
+      margin: 10px;
+
+      .section-item {
+        margin: 5px;
+
+        h3 {
+          display: inline-block;
+          margin-right: 10px;
+        }
+
+        h4 {
+          display: inline-block;
+          color: #666;
+        }
+      }
+
+      .timeline-section-item {
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+        margin-top: 10px;
+
+        h3 {
+          display: inline-block;
+          margin: 0;
+        }
+
+        h4 {
+          margin: 10px 0;
+        }
+
+        .timeline {
+          position: absolute;
+          width: 65px;
+          text-align: right;
+          font-size: 12px;
+        }
+
+        .timeline::before {
+          content: "";
+          position: absolute;
+          left: 70px; /* Adjusted to align with the timeline */
+          top: 5px;
+          width: 16px;
+          height: 16px;
+          background-color: #007BFF;
+          border-radius: 50%;
+        }
+
+        .timeline-section-details {
+          position: relative;
+          margin-left: 92px;
+        }
+
+        .description {
+          color: #666;
+          font-size: 12px;
+          display: inline-block;
+          margin-left: 5px;
+        }
+
+        .title-anex {
+          color: #666;
+          font-size: 12px;
+          margin-top: 5px;
+        }
+      }
+
+      .timeline-section-item::before {
+        content: "";
+        position: absolute;
+        left: 75px; /* Adjusted to align with the timeline */
+        top: 30px;
+        width: 6px;
+        height: calc(100% - 30px);
+        background-color: #ccc;
+        border-radius: 3px;
+      }
+
+      .highlights, .courses {
+        padding-left: 15px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+
+      .highlights li, .courses li {
+        margin-bottom: 5px;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-bottom: 10px;
+      }
+
+      .chip {
+        background-color: #007BFF;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 20px;
+        font-size: 12px;
+      }
+    }
+
+    .profile-picture {
+      float: left;
       margin-right: 20px;
-      position: relative;
-      width: 82px;
-      text-align: center;
-  }
-  .job-item .job-details, .project-details .timeline, .vol-item .vol-details, .edu-item .edu-details {
-      position: relative;
-      left: 15px;
-  }
-  .job-item h3, .project-item h3, .vol-item h3, .edu-item h3 {
-      display: inline-block;
-      margin: 0;
-  }
-  .job-item h4, .project-item h4, .vol-item h4, .edu-item h4 {
-      margin: 10px 0;
-  }
-  .job-item .description, .vol-item .description, .edu-item .description {
-      color: #666;
-      font-size: 14px;
-      display: inline-block;
-      margin-left: 5px;
-  }
-  .job-item .location-url, .edu-item .area-study {
-      margin-top: 5px;
-      color: #666;
-      font-size: 12px;
-  }
-  .highlights, .courses {
-      padding-left: 15px;
-      margin-top: 5px;
-      margin-bottom: 5px;
-  }
-  .highlights li, .courses li {
-      margin-bottom: 5px;
-  }
-  .job-item::before, .project-item::before, .vol-item::before, .edu-item::before {
-      content: "";
-      position: absolute;
-      left: 95px; /* Adjusted to align with the timeline */
-      top: 40px;
-      width: 8px;
-      height: calc(100% - 40px);
-      background-color: #ccc;
-      border-radius: 4px;
-  }
-  .timeline::before {
-      content: "";
-      position: absolute;
-      left: 90px; /* Adjusted to align with the timeline */
-      top: 10px;
-      width: 18px;
-      height: 18px;
-      background-color: #007BFF;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
+      object-fit: cover;
+    }
+    @media only screen and (max-width: 1000px) {
+      .profile-picture {
+        display: none;
+      }
+    }
+    @media only print {
+      .profile-picture {
+        display: none;
+      }
+    }
+
+    .contact-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .contact-item {
+      text-decoration: none;
+      color: #007BFF;
+    }
   }
 </style>
 `;
@@ -775,7 +759,7 @@ export function render(data) {
 	// Create the right column
 	let rightColumn = `<div class="right-column">`;
 	if (data.work) {
-		rightColumn += createWorkSection(data.work);
+		rightColumn += createExperienceSection(data.work);
 	}
 	if (data.projects) {
 		rightColumn += createProjectsSection(data.projects);
@@ -785,22 +769,6 @@ export function render(data) {
 	}
 	if (data.education) {
 		rightColumn += createEducationSection(data.education);
-	}
-
-	for (const key in data) {
-		if (
-			data.hasOwnProperty(key) &&
-			key !== "basics" &&
-			key !== "skills" &&
-			key !== "languages" &&
-			key !== "work" &&
-			key !== "volunteer" &&
-			key !== "education" &&
-			key !== "references" &&
-			key !== "projects"
-		) {
-			rightColumn += createGeneralSection(key, data[key]);
-		}
 	}
 	rightColumn += `</div>`;
 
