@@ -235,12 +235,14 @@ function createWorkSection(work) {
 
 		if (startDate || endDate) {
 			let timeline = `<div class="timeline">`;
-			if (startDate) {
-				timeline += createElement("span", "date", startDate);
-			}
 			if (endDate) {
-				timeline += ` <br> `;
 				timeline += createElement("span", "date", endDate);
+			} else {
+				timeline += createElement("span", "date", "Present");
+			}
+			if (startDate) {
+				timeline += ` <br> `;
+				timeline += createElement("span", "date", startDate);
 			}
 			timeline += `</div>`;
 			jobItem += timeline;
@@ -311,12 +313,14 @@ function createVolunteerSection(volunteer) {
 
 		if (startDate || endDate) {
 			let timeline = `<div class="timeline">`;
-			if (startDate) {
-				timeline += createElement("span", "date", startDate);
-			}
 			if (endDate) {
-				timeline += ` <br> `;
 				timeline += createElement("span", "date", endDate);
+			} else {
+				timeline += createElement("span", "date", "Present");
+			}
+			if (startDate) {
+				timeline += ` <br> `;
+				timeline += createElement("span", "date", startDate);
 			}
 			timeline += `</div>`;
 			volItem += timeline;
@@ -375,12 +379,14 @@ function createEducationSection(education) {
 
 		if (startDate || endDate) {
 			let timeline = `<div class="timeline">`;
-			if (startDate) {
-				timeline += createElement("span", "date", startDate);
-			}
 			if (endDate) {
-				timeline += ` <br> `;
 				timeline += createElement("span", "date", endDate);
+			} else {
+				timeline += createElement("span", "date", "Present");
+			}
+			if (startDate) {
+				timeline += ` <br> `;
+				timeline += createElement("span", "date", startDate);
 			}
 			timeline += `</div>`;
 			eduItem += timeline;
@@ -492,23 +498,26 @@ export function render(data) {
 <style>
   .resume-container {
     display: flex;
-    width: 100%;
-    margin: 0;
+    padding: 20px;
     font-family: Arial, sans-serif;
+  }
+  .resume-container p {
+      margin: 5px 0 0 0;
   }
   .left-column {
     flex: 1;
-    padding: 20px;
+    background-color: #f4f4f9;
+    border-radius: 8px;
   }
   .right-column {
     flex: 2;
-    padding: 20px;
   }
   .section {
-    background-color: #f4f4f9;
-    margin-bottom: 20px;
     padding: 20px;
-    border-radius: 8px;
+  }
+  .section h1 {
+    margin-top: 0;
+    margin-bottom: 10px;
   }
   .section h2 {
     margin-top: 0;
@@ -556,18 +565,8 @@ export function render(data) {
   .job-item, .vol-item, .edu-item {
       position: relative;
       display: flex;
-      margin-bottom: 10px;
       align-items: flex-start;
-  }
-  .job-item::before, .vol-item::before, .edu-item::before {
-      content: "";
-      position: absolute;
-      left: 95px; /* Adjusted to align with the timeline */
-      top: 40px;
-      width: 8px;
-      height: calc(100% - 35px);
-      background-color: #ccc;
-      border-radius: 4px;
+      margin-top: 10px;
   }
   .job-item .timeline, .vol-item .timeline, .edu-item .timeline {
       margin-right: 20px;
@@ -597,16 +596,24 @@ export function render(data) {
       color: #666;
       font-size: 12px;
   }
-  .job-item p, .vol-item p, .edu-item p {
-      margin-top: 5px;
-  }
   .highlights, .courses {
       list-style-type: none;
       padding: 0;
       margin-top: 5px;
+      margin-bottom: 5px;
   }
   .highlights li, .courses li {
       margin-bottom: 5px;
+  }
+  .job-item::before, .vol-item::before, .edu-item::before {
+      content: "";
+      position: absolute;
+      left: 95px; /* Adjusted to align with the timeline */
+      top: 40px;
+      width: 8px;
+      height: calc(100% - 40px);
+      background-color: #ccc;
+      border-radius: 4px;
   }
   .timeline::before {
       content: "";
@@ -617,7 +624,6 @@ export function render(data) {
       height: 18px;
       background-color: #007BFF;
       border-radius: 50%;
-      z-index: 1; /* Ensure it stays above the line */
   }
 </style>
 `;
