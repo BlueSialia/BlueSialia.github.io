@@ -152,6 +152,34 @@ function createBasicsSection(basics) {
 }
 
 /**
+ * Creates a section and its content for Languages based on the given data.
+ *
+ * @param {Array<Object>} languages - An array of language objects (language, fluency).
+ * @returns {string} - The generated HTML string for the Languages section.
+ */
+function createLanguagesSection(languages) {
+	let languagesSection = createSection("Languages");
+
+	for (const language of languages) {
+		const { language: lang, fluency } = language;
+		let languageItem = `<div class="language-item">`;
+
+		if (lang) {
+			languageItem += createElement("h3", null, lang);
+		}
+		if (fluency) {
+			languageItem += createElement("h4", "subtitle", fluency);
+		}
+
+		languageItem += `</div>`;
+		languagesSection += languageItem;
+	}
+
+	languagesSection += `</div>`;
+	return languagesSection;
+}
+
+/**
  * Creates a section and its content for Skills based on the given data.
  *
  * @param {Array<Object>} skills - An array of skill objects (name, level, keywords).
@@ -179,34 +207,6 @@ function createSkillsSection(skills) {
 
 	skillsSection += `</div>`;
 	return skillsSection;
-}
-
-/**
- * Creates a section and its content for Languages based on the given data.
- *
- * @param {Array<Object>} languages - An array of language objects (language, fluency).
- * @returns {string} - The generated HTML string for the Languages section.
- */
-function createLanguagesSection(languages) {
-	let languagesSection = createSection("Languages");
-
-	for (const language of languages) {
-		const { language: lang, fluency } = language;
-		let languageItem = `<div class="language-item">`;
-
-		if (lang) {
-			languageItem += createElement("h3", null, lang);
-		}
-		if (fluency) {
-			languageItem += createElement("h4", "subtitle", fluency);
-		}
-
-		languageItem += `</div>`;
-		languagesSection += languageItem;
-	}
-
-	languagesSection += `</div>`;
-	return languagesSection;
 }
 
 /**
@@ -597,8 +597,7 @@ export function render(data) {
       font-size: 12px;
   }
   .highlights, .courses {
-      list-style-type: none;
-      padding: 0;
+      padding-left: 15px;
       margin-top: 5px;
       margin-bottom: 5px;
   }
@@ -636,11 +635,14 @@ export function render(data) {
 	if (data.basics) {
 		leftColumn += createBasicsSection(data.basics);
 	}
+	if (data.languages) {
+		leftColumn += createLanguagesSection(data.languages);
+	}
 	if (data.skills) {
 		leftColumn += createSkillsSection(data.skills);
 	}
-	if (data.languages) {
-		leftColumn += createLanguagesSection(data.languages);
+	if (data.references) {
+		leftColumn += createReferencesSection(data.references);
 	}
 	leftColumn += `</div>`;
 
@@ -664,7 +666,8 @@ export function render(data) {
 			key !== "languages" &&
 			key !== "work" &&
 			key !== "volunteer" &&
-			key !== "education"
+			key !== "education" &&
+			key !== "references"
 		) {
 			rightColumn += createGeneralSection(key, data[key]);
 		}
@@ -676,4 +679,44 @@ export function render(data) {
 
 	resumeContainer += `</div>`;
 	return resumeContainer;
+}
+
+/**
+ * Creates a section and its content for References based on the given data.
+ *
+ * @param {Array<Object>} references - An array of reference objects (name, reference).
+ * @returns {string} - The generated HTML string for the References section.
+ */
+function createReferencesSection(references) {
+	let referencesSection = `<div class="section references">`;
+	referencesSection += createElement("h2", null, "References");
+
+	for (const ref of references) {
+		const { name, reference } = ref;
+		let referenceItem = `<div class="reference-item">`;
+
+		if (name) {
+			referenceItem += createElement("h3", null, name);
+		}
+
+		if (reference) {
+			try {
+				new URL(reference); // Check if reference is a valid URL
+				referenceItem += createElement(
+					"a",
+					"reference-link",
+					reference,
+					{ href: reference },
+				);
+			} catch (e) {
+				referenceItem += createElement("p", null, reference);
+			}
+		}
+
+		referenceItem += `</div>`;
+		referencesSection += referenceItem;
+	}
+
+	referencesSection += `</div>`;
+	return referencesSection;
 }
