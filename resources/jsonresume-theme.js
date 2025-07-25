@@ -210,6 +210,46 @@ function createSkillsSection(skills) {
 }
 
 /**
+ * Creates a section and its content for References based on the given data.
+ *
+ * @param {Array<Object>} references - An array of reference objects (name, reference).
+ * @returns {string} - The generated HTML string for the References section.
+ */
+function createReferencesSection(references) {
+	let referencesSection = `<div class="section references">`;
+	referencesSection += createElement("h2", null, "References");
+
+	for (const ref of references) {
+		const { name, reference } = ref;
+		let referenceItem = `<div class="reference-item">`;
+
+		if (name) {
+			referenceItem += createElement("h3", null, name);
+		}
+
+		if (reference) {
+			try {
+				new URL(reference); // Check if reference is a valid URL
+				referenceItem += createElement(
+					"a",
+					"reference-link",
+					reference,
+					{ href: reference },
+				);
+			} catch (e) {
+				referenceItem += createElement("p", null, reference);
+			}
+		}
+
+		referenceItem += `</div>`;
+		referencesSection += referenceItem;
+	}
+
+	referencesSection += `</div>`;
+	return referencesSection;
+}
+
+/**
  * Creates a section and its content for Work based on the given data.
  *
  * @param {Array<Object>} work - An array of work objects (name, description, location, url, position, summary, highlights, startDate, endDate).
@@ -287,6 +327,92 @@ function createWorkSection(work) {
 
 	workSection += `</div>`;
 	return workSection;
+}
+
+/**
+ * Creates a section and its content for Projects based on the given data.
+ *
+ * @param {Array<Object>} projects - An array of project objects (name, url, description, highlights, keywords, startDate, endDate).
+ * @returns {string} - The generated HTML string for the Projects section.
+ */
+function createProjectsSection(projects) {
+	let projectsSection = `<div class="section projects">`;
+	projectsSection += createElement("h2", null, "Projects");
+
+	for (const project of projects) {
+		const {
+			name,
+			url,
+			description,
+			highlights,
+			keywords,
+			startDate,
+			endDate,
+		} = project;
+		let projectItem = `<div class="project-item">`;
+
+		if (startDate || endDate) {
+			let timeline = `<div class="timeline">`;
+			if (endDate) {
+				timeline += createElement("span", "date", endDate);
+			} else {
+				timeline += createElement("span", "date", "Present");
+			}
+			if (startDate) {
+				timeline += ` <br> `;
+				timeline += createElement("span", "date", startDate);
+			}
+			timeline += `</div>`;
+			projectItem += timeline;
+		}
+
+		projectItem += `<div class="project-details">`;
+
+		if (name || url) {
+			let titleAndUrl = `<div style="display: flex; align-items: center;">`;
+			if (name) {
+				titleAndUrl += createElement("h3", null, name);
+			}
+			if (url) {
+				try {
+					new URL(url); // Check if url is a valid URL
+					titleAndUrl += ` &bull; `;
+					titleAndUrl += createElement("a", "description", url, {
+						href: url,
+					});
+				} catch (e) {
+					titleAndUrl += ` &bull; `;
+					titleAndUrl += createElement("span", null, url);
+				}
+			}
+			titleAndUrl += `</div>`;
+			projectItem += titleAndUrl;
+		}
+
+		if (description) {
+			projectItem += createElement("p", null, description);
+		}
+
+		if (highlights && highlights.length > 0) {
+			let highlightList = `<ul class="highlights">`;
+			for (const highlight of highlights) {
+				highlightList += createElement("li", null, highlight);
+			}
+			highlightList += `</ul>`;
+			projectItem += highlightList;
+		}
+
+		if (keywords && keywords.length > 0) {
+			projectItem += addChips(keywords);
+		}
+
+		projectItem += `</div>`;
+		projectItem += `</div>`;
+		projectsSection += projectItem;
+	}
+
+	projectsSection += `</div>`;
+	return projectsSection;
 }
 
 /**
@@ -562,27 +688,27 @@ export function render(data) {
   .work, .volunteer, .education {
       position: relative;
   }
-  .job-item, .vol-item, .edu-item {
+  .job-item, .project-item, .vol-item, .edu-item {
       position: relative;
       display: flex;
       align-items: flex-start;
       margin-top: 10px;
   }
-  .job-item .timeline, .vol-item .timeline, .edu-item .timeline {
+  .job-item .timeline, .project-item .timeline, .vol-item .timeline, .edu-item .timeline {
       margin-right: 20px;
       position: relative;
       width: 82px;
       text-align: center;
   }
-  .job-item .job-details, .vol-item .vol-details, .edu-item .edu-details {
+  .job-item .job-details, .project-details .timeline, .vol-item .vol-details, .edu-item .edu-details {
       position: relative;
       left: 15px;
   }
-  .job-item h3, .vol-item h3, .edu-item h3 {
+  .job-item h3, .project-item h3, .vol-item h3, .edu-item h3 {
       display: inline-block;
       margin: 0;
   }
-  .job-item h4, .vol-item h4, .edu-item h4 {
+  .job-item h4, .project-item h4, .vol-item h4, .edu-item h4 {
       margin: 10px 0;
   }
   .job-item .description, .vol-item .description, .edu-item .description {
@@ -604,7 +730,7 @@ export function render(data) {
   .highlights li, .courses li {
       margin-bottom: 5px;
   }
-  .job-item::before, .vol-item::before, .edu-item::before {
+  .job-item::before, .project-item::before, .vol-item::before, .edu-item::before {
       content: "";
       position: absolute;
       left: 95px; /* Adjusted to align with the timeline */
@@ -651,6 +777,9 @@ export function render(data) {
 	if (data.work) {
 		rightColumn += createWorkSection(data.work);
 	}
+	if (data.projects) {
+		rightColumn += createProjectsSection(data.projects);
+	}
 	if (data.volunteer) {
 		rightColumn += createVolunteerSection(data.volunteer);
 	}
@@ -667,7 +796,8 @@ export function render(data) {
 			key !== "work" &&
 			key !== "volunteer" &&
 			key !== "education" &&
-			key !== "references"
+			key !== "references" &&
+			key !== "projects"
 		) {
 			rightColumn += createGeneralSection(key, data[key]);
 		}
@@ -679,44 +809,4 @@ export function render(data) {
 
 	resumeContainer += `</div>`;
 	return resumeContainer;
-}
-
-/**
- * Creates a section and its content for References based on the given data.
- *
- * @param {Array<Object>} references - An array of reference objects (name, reference).
- * @returns {string} - The generated HTML string for the References section.
- */
-function createReferencesSection(references) {
-	let referencesSection = `<div class="section references">`;
-	referencesSection += createElement("h2", null, "References");
-
-	for (const ref of references) {
-		const { name, reference } = ref;
-		let referenceItem = `<div class="reference-item">`;
-
-		if (name) {
-			referenceItem += createElement("h3", null, name);
-		}
-
-		if (reference) {
-			try {
-				new URL(reference); // Check if reference is a valid URL
-				referenceItem += createElement(
-					"a",
-					"reference-link",
-					reference,
-					{ href: reference },
-				);
-			} catch (e) {
-				referenceItem += createElement("p", null, reference);
-			}
-		}
-
-		referenceItem += `</div>`;
-		referencesSection += referenceItem;
-	}
-
-	referencesSection += `</div>`;
-	return referencesSection;
 }
