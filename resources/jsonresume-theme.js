@@ -1,4 +1,12 @@
-// Function to create an element with given tag, class, text content, and attributes
+/**
+ * Creates an HTML element with given tag, class, text content, and attributes.
+ *
+ * @param {string} tagName - The name of the HTML tag.
+ * @param {string} [className=""] - The class name for the element.
+ * @param {string} [textContent=""] - The text content for the element.
+ * @param {Object} [attributes={}] - Additional attributes for the element.
+ * @returns {string} - The generated HTML string.
+ */
 function createElement(
 	tagName,
 	className = "",
@@ -14,7 +22,12 @@ function createElement(
 	return element;
 }
 
-// Function to create a section and its content
+/**
+ * Creates a section with a title and data content.
+ *
+ * @param {string} title - The title of the section.
+ * @returns {string} - The generated HTML string for the section.
+ */
 function createSection(title) {
 	let sectionDiv = `<div class="section">`;
 	if (title) {
@@ -23,7 +36,14 @@ function createSection(title) {
 	return sectionDiv;
 }
 
-// Function to add contact information
+/**
+ * Adds contact information to an HTML string.
+ *
+ * @param {string} email - The email address.
+ * @param {string} phone - The phone number.
+ * @param {string} url - The URL.
+ * @returns {string} - The generated HTML string for the contact information.
+ */
 function addContactInfo(email, phone, url) {
 	let contactInfo = ``;
 	if (email) {
@@ -42,7 +62,12 @@ function addContactInfo(email, phone, url) {
 	return contactInfo;
 }
 
-// Function to add location information
+/**
+ * Adds location information to an HTML string.
+ *
+ * @param {Object} location - An object containing location details (address, city, region, postalCode, countryCode).
+ * @returns {string} - The generated HTML string for the location information.
+ */
 function addLocation(location) {
 	let locationLine = `<div class="location">`;
 	const locationParts = [];
@@ -56,7 +81,12 @@ function addLocation(location) {
 	return locationLine;
 }
 
-// Function to add chips
+/**
+ * Adds chips (keyword tags) to an HTML string.
+ *
+ * @param {Array<string>} keywords - An array of keywords.
+ * @returns {string} - The generated HTML string for the chips.
+ */
 function addChips(keywords) {
 	let keywordChips = `<div class="chips">`;
 	for (const keyword of keywords) {
@@ -66,7 +96,12 @@ function addChips(keywords) {
 	return keywordChips;
 }
 
-// Function to add highlights
+/**
+ * Adds highlights to an HTML string.
+ *
+ * @param {Array<string>} highlights - An array of highlight descriptions.
+ * @returns {string} - The generated HTML string for the highlights.
+ */
 function addHighlights(highlights) {
 	if (!highlights || !highlights.length) return ``;
 	let highlightList = `<ul class="highlights">`;
@@ -77,7 +112,12 @@ function addHighlights(highlights) {
 	return highlightList;
 }
 
-// Function to create a section and its content for Basics
+/**
+ * Creates a section and its content for Basics based on the given data.
+ *
+ * @param {Object} basics - An object containing basic information (name, label, image, email, phone, url, location, summary).
+ * @returns {string} - The generated HTML string for the Basics section.
+ */
 function createBasicsSection(basics) {
 	const {
 		name,
@@ -111,7 +151,12 @@ function createBasicsSection(basics) {
 	return basicsSection;
 }
 
-// Function to create a section and its content for Skills
+/**
+ * Creates a section and its content for Skills based on the given data.
+ *
+ * @param {Array<Object>} skills - An array of skill objects (name, level, keywords).
+ * @returns {string} - The generated HTML string for the Skills section.
+ */
 function createSkillsSection(skills) {
 	let skillsSection = createSection("Skills");
 
@@ -136,7 +181,12 @@ function createSkillsSection(skills) {
 	return skillsSection;
 }
 
-// Function to create a section and its content for Languages
+/**
+ * Creates a section and its content for Languages based on the given data.
+ *
+ * @param {Array<Object>} languages - An array of language objects (language, fluency).
+ * @returns {string} - The generated HTML string for the Languages section.
+ */
 function createLanguagesSection(languages) {
 	let languagesSection = createSection("Languages");
 
@@ -159,7 +209,12 @@ function createLanguagesSection(languages) {
 	return languagesSection;
 }
 
-// Function to create a section and its content for Work
+/**
+ * Creates a section and its content for Work based on the given data.
+ *
+ * @param {Array<Object>} work - An array of work objects (name, description, location, url, position, summary, highlights, startDate, endDate).
+ * @returns {string} - The generated HTML string for the Work section.
+ */
 function createWorkSection(work) {
 	let workSection = createSection("Work");
 
@@ -232,7 +287,12 @@ function createWorkSection(work) {
 	return workSection;
 }
 
-// Function to create a section and its content for Volunteer
+/**
+ * Creates a section and its content for Volunteer based on the given data.
+ *
+ * @param {Array<Object>} volunteer - An array of volunteer objects (organization, url, position, summary, highlights, startDate, endDate).
+ * @returns {string} - The generated HTML string for the Volunteer section.
+ */
 function createVolunteerSection(volunteer) {
 	let volunteerSection = createSection("Volunteer");
 
@@ -291,7 +351,12 @@ function createVolunteerSection(volunteer) {
 	return volunteerSection;
 }
 
-// Function to create a section and its content for Education
+/**
+ * Creates a section and its content for Education based on the given data.
+ *
+ * @param {Array<Object>} education - An array of education objects (institution, url, area, studyType, courses, startDate, endDate).
+ * @returns {string} - The generated HTML string for the Education section.
+ */
 function createEducationSection(education) {
 	let educationSection = createSection("Education");
 
@@ -362,7 +427,13 @@ function createEducationSection(education) {
 	return educationSection;
 }
 
-// Function to create a section and its content for General
+/**
+ * Creates a section and its content for General data not covered by specific sections.
+ *
+ * @param {string} title - The title of the general section.
+ * @param {*} data - The general data to be included in the section.
+ * @returns {string} - The generated HTML string for the general section.
+ */
 function createGeneralSection(title, data) {
 	let sectionDiv = createSection(title);
 
@@ -410,7 +481,12 @@ function createGeneralSection(title, data) {
 	return sectionDiv;
 }
 
-// Expose a single render function that accepts the JSON object and returns the HTML string
+/**
+ * Renders the JSON resume data into an HTML string with defined styles and sections.
+ *
+ * @param {Object} data - The JSON resume data.
+ * @returns {string} - The generated HTML string representing the rendered resume.
+ */
 export function render(data) {
 	const styles = `
 <style>
