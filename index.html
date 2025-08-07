@@ -1,267 +1,34 @@
 <!doctype html>
 <html lang="en">
+	<head>
+		<!-- Thanks for reading my code -->
+		<title>Jorge Domínguez Arnáez - Resume</title>
 
-<head>
-	<!-- Thanks for reading my code -->
-	<title>Jorge Domínguez Arnáez Software Developer Resume</title>
+		<!-- UTF 8 as my Character Set -->
+		<meta charset="utf-8" />
 
-	<!-- UTF 8 as my Character Set -->
-	<meta charset="utf-8">
+		<!-- Set the Viewport for good mobile behavior -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	<!-- Set the Viewport for good mobile behavior -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- Favicon made by yours truly -->
+		<link rel="shortcut icon" href="resources/favicon.ico" />
+	</head>
 
-	<!-- Info For Bots -->
-	<meta name="keywords"
-		content="web, website, Software, design, develop, designer, developer, engineer, architect, frontend, backend, stack, fullstack, javascrip, typescript, nodejs, java, jquery, ajax, angular, polymer, bootstrap, mysql, linux, debian, admin, administrator, seo, resume, cv, portfolio, jorge dominguez arnaez">
-	<meta name="description" content="Software Developer Jorge Domínguez Arnáez Resume and Showcase">
-	<meta name="author" content="Jorge Domínguez Arnáez">
-	<meta name="robots" content="all">
+	<body>
+		<script type="module">
+			import { render } from "https://cdn.jsdelivr.net/npm/jsonresume-theme-bluetime/dist/index.min.js";
 
-	<!-- Gotta love bootstrap -->
-	<link rel="stylesheet" href="resources/tools/bootstrap.min.css" />
-
-	<!-- Simple style file -->
-	<link rel="stylesheet" href="resources/style.css?v1.1" />
-
-	<!-- Favicon made by yours truly -->
-	<link rel="shortcut icon" href="resources/favicon.ico">
-</head>
-
-<body>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-10 col-md-push-1">
-
-				<header role="banner">
-					<h1 id="headline">Jorge Dominguez Arnaez</h1>
-					<h2 id="sub-headline">
-						<span class="software_text">Software</span>
-						<span class="typed"></span>
-					</h2>
-				</header>
-
-				<section id="do">
-					<div class="header-box">
-						<h3>What Do I Do?</h3>
-					</div>
-					<p>Create fun projects</p>
-					<p>Participate in programming challenges</p>
-					<p>Write quality code that strictly follows a style guide</p>
-					<p>Keep my functions small and self explanatory</p>
-					<p>Make unitary and e2e tests for the code I maintain</p>
-					<p>Document every feature</p>
-					<p>Keep track of every bug</p>
-					<p>Update the Changelog.md</p>
-					<p>Be up to date with security best practices</p>
-					<p>Never stop learning</p>
-				</section>
-
-				<hr>
-
-				<section id="know">
-					<div class="header-box">
-						<h3>What Do I Know?</h3>
-					</div>
-					<ul>
-						<li>Java, JavaScript, NodeJS, Rust & Typescript</li>
-						<li>Angular, D3.js, Polymer & VanillaJS</li>
-						<li>How to do awesome things with pure HTML5</li>
-						<li>How to use Git and Git Flow</li>
-						<li>How to create and edit diferent types of media such as images, audio, video and 3D models</li>
-						<li>How to configure Apache and Nginx, setup CRONs, manage packages, exit VIM, and other Linux
-							Sys Admin tasks</li>
-					</ul>
-				</section>
-
-				<hr>
-
-				<section id="built">
-					<div class="header-box">
-						<h3>What Have I Done?</h3>
-					</div>
-
-					<div class="built-item row">
-						<div class="col-md-8">
-							<h4>Dataships</h4>
-							<p>Worked for Dataships to maintain their API and develop new services.
-							<ul>
-								<li>Maintenance of a React application for customers to administer their account and audit the marketability of their audiences.</li>
-								<li>Maintenance of the main PHP & Symfony service, acting as the only exposed API for all the different clients: customer admin client, internal admin client, Shopify's app, marketing platforms apps...</li>
-								<li>Development of a new PHP service to host all the different policies of the customers with Twig.</li>
-								<li>Development of a new PHP service responsible of interacting with the marketing platforms. Abstracting the concept of a marketing platform to allow for new platforms to be offered to customers.</li>
-							</ul>
-							</p>
-							<p>
-								<a target="_blank" href="https://www.dataships.io/">Dataships site</a>
-							</p>
-						</div>
-						<div class="col-md-4">
-							<img class="img-responsive img-rounded" alt="Dataships"
-								src="resources/images/portfolio-dataships.png" />
-						</div>
-					</div>
-
-					<div class="built-item row">
-						<div class="col-md-4">
-							<img class="img-responsive img-rounded" alt="Vectary"
-								src="resources/images/portfolio-vectary.png" />
-						</div>
-						<div class="col-md-8">
-							<h4>Vectary</h4>
-							<p>3 years at Vectary maintaining and replacing their cluster of microservices making up the APIs used by the entire software solution.
-							<ul>
-								<li>Initial maintenance of REST-like microservices in NodeJS/Typescript. Using a relational database without relations and storing binaries in AWS's expensive Elastic File System which where indexed with Elasticsearch to allow for fuzzy searches.</li>
-								<li>Replacement of the cluster of microservices with a GraphQL API using an improved database schema, S3 for binary storage, a system to prevent duplicated binaries and PostgreSQL's TSVector and TSQuery types for fuzzy searches. Achieving better performance at one fifth of the cost while also offering new features.</li>
-							</ul>
-							</p>
-							<p>
-								<a target="_blank" href="https://www.vectary.com/">Vectary site</a>
-							</p>
-						</div>
-					</div>
-
-					<div class="built-item row">
-						<div class="col-md-10">
-							<h4>SCADA System at Lácteos Martínez</h4>
-							<p>Replaced 20 years old SCADA software of the dairy factory of Lácteos Martínez with a
-								custom solution. A Debian system with Rust services that comunicate with PLCs through
-								TCP and UDP, TimescaleDB and Nginx with VanillaJS and D3.js frontend.</p>
-						</div>
-						<div class="col-md-2">
-							<img class="img-responsive img-rounded" alt="Lácteos Martínez"
-								src="resources/images/portfolio-lacma.png" />
-						</div>
-					</div>
-
-					<div class="built-item row">
-						<div class="col-md-5">
-							<a target="_blank" href="https://unraid.net/">
-								<img class="img-responsive img-rounded" alt="Unblue"
-									src="resources/images/portfolio-unblue.png" />
-							</a>
-						</div>
-						<div class="col-md-7">
-							<h4>Unraid OS Homelab</h4>
-							<p>Built and configured an Unraid OS server for data storage, machine virtualization with
-								GPU passthrough and dockerization. Accessible from anywhere through a VPN.</p>
-							<p>
-								<a target="_blank" href="https://unraid.net/">Unraid OS site</a>
-							</p>
-						</div>
-					</div>
-
-					<div class="built-item row">
-						<div class="col-md-7">
-							<h4>Cocoon.io</h4>
-							<p>I've worked for Ludei for more than 3 years developing and maintaining their Cocoon.io
-								service, which consisted of:
-							<ul>
-								<li>Maintain the AngularJS frontend of the service and its Express.js server for OAuth2
-									authentication.</li>
-								<li>Develop and maintain the new compiler in Typescript for NodeJS which had to run on
-									MacOS, Ubuntu and Windows 10. <a
-										href="https://github.com/CocoonIO/cocoon-compiler">Open sourced</a>.</li>
-								<li>Aid on the development of the Atomic Plugins for several platforms. <a
-										href="https://github.com/ludei?q=atomic-plugins">Open sourced</a>.</li>
-								<li>Develop the new SDK for the service in Typescript for the browser and NodeJS. <a
-										href="https://github.com/CocoonIO/cocoon-cloud-sdk">Open sourced</a>.</li>
-							</ul>
-							</p>
-						</div>
-						<div class="col-md-5">
-							<a target="_blank" href="https://www.cocoon.io/">
-								<img class="img-responsive img-rounded" alt="Cocoon.io"
-									src="resources/images/portfolio-cocoon.png" />
-							</a>
-						</div>
-					</div>
-
-				</section>
-
-				<hr>
-
-				<section id="resume">
-					<div class="row">
-						<div class="col-md-8 col-md-push-2">
-							<h3>Do I Have A Resume?</h3>
-							<p class="lead text-center"><a target="_blank" href="/resume">Yes</a>!
-							</p>
-						</div>
-					</div>
-				</section>
-
-				<hr>
-
-				<section id="github">
-					<div class="row">
-						<div class="col-md-8 col-md-push-2">
-							<h3>Do I Have A GitHub?</h3>
-							<p class="lead text-center"><a target="_blank" href="https://github.com/BlueSialia">Yes</a>!
-							</p>
-						</div>
-					</div>
-				</section>
-
-				<hr>
-
-				<section id="where">
-					<div class="row">
-						<div class="col-md-8 col-md-push-2">
-							<h3>Where Am I?</h3>
-							<div id="map"></div>
-						</div>
-					</div>
-				</section>
-
-				<section id="contact">
-					<div class="row">
-						<div class="col-md-8 col-md-push-2">
-							<h3>What Is My Contact?</h3>
-
-							<a href="mailto:bluesialia@gmail.com">
-								<p id="email" class="text-center">bluesialia@gmail.com</p>
-							</a>
-							<p id="phone" class="text-center">+34 617 52 61 68</p>
-							<p id="phone" class="text-center">+353 89 600 4663</p>
-
-							<p class="lead text-center">Or use this contact form below:</p>
-
-							<form name="contactform" method="post" action="https://formspree.io/bluesialia@gmail.com">
-								<input style="display:none" type="hidden" name="_gotcha" value="">
-								<label>Your Name
-									<input class="input form-control" type="text" name="name">
-								</label>
-								<label>Your Email
-									<input class="input form-control" type="text" name="_replyto">
-								</label>
-								<label>Your Message
-									<textarea class="input form-control" name="message"></textarea>
-								</label>
-								<input class="input submit form-control" type="submit" value="Send">
-							</form>
-						</div>
-					</div>
-
-				</section>
-
-			</div>
-		</div>
-	</div>
-
-	<!-- jQuery, dependency for Typed.js -->
-	<script type="text/javascript" src="resources/tools/jquery-3.2.1.min.js"></script>
-
-	<!-- Typed.js gives this page a nice touch -->
-	<script type="text/javascript" src="resources/tools/typed.min.js"></script>
-
-	<!-- My script, just google maps initMap() and typed.js init -->
-	<script type="text/javascript" src="resources/script.js"></script>
-
-	<!-- Google Maps -->
-	<script async defer
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcRTmAZV29QIX45-xY4No4vOKb_ul1sQE&callback=initMap"></script>
-
-</body>
-
+			fetch(
+				"https://gist.githubusercontent.com/BlueSialia/583aacce1c60868ca91c24c3b5f8bedb/raw",
+			)
+				.then((response) => response.json())
+				.then((data) => {
+					const resumeHTML = render(data);
+					document.body.innerHTML = resumeHTML;
+				})
+				.catch((error) => {
+					console.error("Error fetching JSON data:", error);
+				});
+		</script>
+	</body>
 </html>
