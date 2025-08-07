@@ -45,7 +45,7 @@
 					<div class="header-box">
 						<h3>What Do I Do?</h3>
 					</div>
-					<p>Expand my portfolio creating fun projects</p>
+					<p>Create fun projects</p>
 					<p>Participate in programming challenges</p>
 					<p>Write quality code that strictly follows a style guide</p>
 					<p>Keep my functions small and self explanatory</p>
@@ -82,31 +82,65 @@
 					</div>
 
 					<div class="built-item row">
-						<div class="col-md-9">
-							<h4>Replace SCADA System with Custom Solution</h4>
+						<div class="col-md-8">
+							<h4>Dataships</h4>
+							<p>Worked for Dataships to maintain their API and develop new services.
+							<ul>
+								<li>Maintenance of a React application for customers to administer their account and audit the marketability of their audiences.</li>
+								<li>Maintenance of the main PHP & Symfony service, acting as the only exposed API for all the different clients: customer admin client, internal admin client, Shopify's app, marketing platforms apps...</li>
+								<li>Development of a new PHP service to host all the different policies of the customers with Twig.</li>
+								<li>Development of a new PHP service responsible of interacting with the marketing platforms. Abstracting the concept of a marketing platform to allow for new platforms to be offered to customers.</li>
+							</ul>
+							</p>
+							<p>
+								<a target="_blank" href="https://www.dataships.io/">Dataships site</a>
+							</p>
+						</div>
+						<div class="col-md-4">
+							<img class="img-responsive img-rounded" alt="Dataships"
+								src="resources/images/portfolio-dataships.png" />
+						</div>
+					</div>
+
+					<div class="built-item row">
+						<div class="col-md-4">
+							<img class="img-responsive img-rounded" alt="Vectary"
+								src="resources/images/portfolio-vectary.png" />
+						</div>
+						<div class="col-md-8">
+							<h4>Vectary</h4>
+							<p>3 years at Vectary maintaining and replacing their cluster of microservices making up the APIs used by the entire software solution.
+							<ul>
+								<li>Initial maintenance of REST-like microservices in NodeJS/Typescript. Using a relational database without relations and storing binaries in AWS's expensive Elastic File System which where indexed with Elasticsearch to allow for fuzzy searches.</li>
+								<li>Replacement of the cluster of microservices with a GraphQL API using an improved database schema, S3 for binary storage, a system to prevent duplicated binaries and PostgreSQL's TSVector and TSQuery types for fuzzy searches. Achieving better performance at one fifth of the cost while also offering new features.</li>
+							</ul>
+							</p>
+							<p>
+								<a target="_blank" href="https://www.vectary.com/">Vectary site</a>
+							</p>
+						</div>
+					</div>
+
+					<div class="built-item row">
+						<div class="col-md-10">
+							<h4>SCADA System at Lácteos Martínez</h4>
 							<p>Replaced 20 years old SCADA software of the dairy factory of Lácteos Martínez with a
 								custom solution. A Debian system with Rust services that comunicate with PLCs through
 								TCP and UDP, TimescaleDB and Nginx with VanillaJS and D3.js frontend.</p>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<img class="img-responsive img-rounded" alt="Lácteos Martínez"
 								src="resources/images/portfolio-lacma.png" />
 						</div>
 					</div>
 
 					<div class="built-item row">
-						<div class="col-md-2">
-							<img class="img-responsive img-rounded" alt="NGBiR"
-								src="resources/images/portfolio-ngbir.png" />
+						<div class="col-md-5">
+							<a target="_blank" href="https://unraid.net/">
+								<img class="img-responsive img-rounded" alt="Unblue"
+									src="resources/images/portfolio-unblue.png" />
+							</a>
 						</div>
-						<div class="col-md-10">
-							<h4>Nintendo Game Boy Emulator in Rust</h4>
-							<p>Develop a Nintendo Game Boy Emulator to master Rust and learn the basics of how CPUs and
-								RAM work.</p>
-						</div>
-					</div>
-
-					<div class="built-item row">
 						<div class="col-md-7">
 							<h4>Unraid OS Homelab</h4>
 							<p>Built and configured an Unraid OS server for data storage, machine virtualization with
@@ -115,21 +149,9 @@
 								<a target="_blank" href="https://unraid.net/">Unraid OS site</a>
 							</p>
 						</div>
-						<div class="col-md-5">
-							<a target="_blank" href="https://unraid.net/">
-								<img class="img-responsive img-rounded" alt="Unblue"
-									src="resources/images/portfolio-unblue.png" />
-							</a>
-						</div>
 					</div>
 
 					<div class="built-item row">
-						<div class="col-md-5">
-							<a target="_blank" href="https://www.cocoon.io/">
-								<img class="img-responsive img-rounded" alt="Cocoon.io"
-									src="resources/images/portfolio-cocoon.png" />
-							</a>
-						</div>
 						<div class="col-md-7">
 							<h4>Cocoon.io</h4>
 							<p>I've worked for Ludei for more than 3 years developing and maintaining their Cocoon.io
@@ -147,8 +169,26 @@
 							</ul>
 							</p>
 						</div>
+						<div class="col-md-5">
+							<a target="_blank" href="https://www.cocoon.io/">
+								<img class="img-responsive img-rounded" alt="Cocoon.io"
+									src="resources/images/portfolio-cocoon.png" />
+							</a>
+						</div>
 					</div>
 
+				</section>
+
+				<hr>
+
+				<section id="resume">
+					<div class="row">
+						<div class="col-md-8 col-md-push-2">
+							<h3>Do I Have A Resume?</h3>
+							<p class="lead text-center"><a target="_blank" href="/resume">Yes</a>!
+							</p>
+						</div>
+					</div>
 				</section>
 
 				<hr>
@@ -183,6 +223,7 @@
 								<p id="email" class="text-center">bluesialia@gmail.com</p>
 							</a>
 							<p id="phone" class="text-center">+34 617 52 61 68</p>
+							<p id="phone" class="text-center">+353 89 600 4663</p>
 
 							<p class="lead text-center">Or use this contact form below:</p>
 
