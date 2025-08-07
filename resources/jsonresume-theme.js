@@ -48,24 +48,32 @@ function createSection(title) {
 function addContactInfo(email, phone, url, profiles) {
 	let contactInfo = `<div class="contact-info">`;
 	if (email) {
-		contactInfo += createElement("a", "contact-item", email, {
-			href: `mailto:${email}`,
-		});
+		contactInfo += createElement(
+			"span",
+			"contact-item",
+			`<i class="fas fa-envelope"></i> ${createElement("a", null, email, { href: "mailto:" + email })}`,
+		);
 	}
 	if (phone) {
-		contactInfo += createElement("a", "contact-item", phone, {
-			href: `tel:${phone}`,
-		});
+		contactInfo += createElement(
+			"span",
+			"contact-item",
+			`<i class="fas fa-phone"></i> ${createElement("a", null, phone, { href: "tel:" + phone })}`,
+		);
 	}
 	if (url) {
-		contactInfo += createElement("a", "contact-item", "Website", {
-			href: url,
-		});
+		contactInfo += createElement(
+			"span",
+			"contact-item",
+			`<i class="fas fa-globe"></i> ${createElement("a", null, url.replace(/^https?:\/\//i, ""), { href: url })}`,
+		);
 	}
 	for (const profile of profiles) {
-		contactInfo += createElement("a", "contact-item", profile.network, {
-			href: profile.url,
-		});
+		contactInfo += createElement(
+			"span",
+			"contact-item",
+			`<i class="fa-brands fa-${profile.network.toLowerCase()}"></i> ${createElement("a", null, profile.url.replace(/^https?:\/\//i, ""), { href: profile.url })}`,
+		);
 	}
 	contactInfo += `</div>`;
 	return contactInfo;
@@ -148,9 +156,9 @@ function createBasicsSection(basics) {
 			alt: "Profile Picture",
 		});
 	}
-	basicsSection += createElement("h1", null, name);
+	basicsSection += createElement("h1", "resume-name", name);
 	if (label) {
-		basicsSection += createElement("h2", "subtitle", label);
+		basicsSection += createElement("h2", "job-title", label);
 	}
 	basicsSection += addLocation(location);
 	basicsSection += addContactInfo(email, phone, url, profiles);
@@ -220,6 +228,33 @@ function createSkillsSection(skills) {
 }
 
 /**
+ * Creates a section and its content for Interests based on the given data.
+ *
+ * @param {Array<Object>} interests - An array of skill objects (name, level, keywords).
+ * @returns {string} - The generated HTML string for the Interests section.
+ */
+function createInterestsSection(interests) {
+	let interestsSection = createSection("Interests");
+
+	for (const interest of interests) {
+		const { name, level, keywords } = interest;
+		let interestItem = `<div class="section-item">`;
+
+		if (name) {
+			interestItem += createElement("h3", null, name);
+		}
+		if (keywords && keywords.length > 0) {
+			interestItem += addChips(keywords);
+		}
+		interestItem += `</div>`;
+		interestsSection += interestItem;
+	}
+
+	interestsSection += `</div>`;
+	return interestsSection;
+}
+
+/**
  * Creates a section and its content for References based on the given data.
  *
  * @param {Array<Object>} references - An array of reference objects (name, reference).
@@ -243,7 +278,7 @@ function createReferencesSection(references) {
 				referenceItem += createElement(
 					"a",
 					"reference-link",
-					reference,
+					reference.replace(/^https?:\/\//i, ""),
 					{ href: reference },
 				);
 			} catch (e) {
@@ -313,7 +348,12 @@ function createExperienceSection(experiences) {
 			}
 			if (url) {
 				locationUrl += ` &bull; `;
-				locationUrl += createElement("a", "url", url, { href: url });
+				locationUrl += createElement(
+					"a",
+					"url",
+					url.replace(/^https?:\/\//i, ""),
+					{ href: url },
+				);
 			}
 			locationUrl += `</div>`;
 			experienceItem += locationUrl;
@@ -383,9 +423,14 @@ function createProjectsSection(projects) {
 		}
 		if (url) {
 			projectItem += ` &bull; `;
-			projectItem += createElement("a", "description", url, {
-				href: url,
-			});
+			projectItem += createElement(
+				"a",
+				"description",
+				url.replace(/^https?:\/\//i, ""),
+				{
+					href: url,
+				},
+			);
 		}
 
 		if (description) {
@@ -457,7 +502,12 @@ function createVolunteerSection(volunteer) {
 			volItem += createElement("h3", null, organization);
 		}
 		if (url) {
-			volItem += createElement("a", "description", url, { href: url });
+			volItem += createElement(
+				"a",
+				"description",
+				url.replace(/^https?:\/\//i, ""),
+				{ href: url },
+			);
 		}
 
 		if (position) {
@@ -523,7 +573,12 @@ function createEducationSection(education) {
 			eduItem += createElement("h3", null, institution);
 		}
 		if (url) {
-			eduItem += createElement("a", "description", url, { href: url });
+			eduItem += createElement(
+				"a",
+				"description",
+				url.replace(/^https?:\/\//i, ""),
+				{ href: url },
+			);
 		}
 
 		if (area || studyType) {
@@ -566,7 +621,8 @@ function createEducationSection(education) {
 export function render(data) {
 	const styles = `
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css');
   .resume-container {
     display: flex;
     padding: 20px;
@@ -593,7 +649,7 @@ export function render(data) {
 
     .right-column {
       flex: 2;
-      padding: 10px;
+      padding: 10px 10px 10px 0;
     }
 
     .section {
@@ -750,6 +806,9 @@ export function render(data) {
 	}
 	if (data.skills) {
 		leftColumn += createSkillsSection(data.skills);
+	}
+	if (data.interests) {
+		leftColumn += createInterestsSection(data.interests);
 	}
 	if (data.references) {
 		leftColumn += createReferencesSection(data.references);
